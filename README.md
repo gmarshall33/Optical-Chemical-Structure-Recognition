@@ -26,8 +26,7 @@ Module 0 - [any image - standard format image]
 Module 1 - [Image -> list of node class] 
 
 	Corner detection 
-	Clustering 
-	Class creation 
+	Clustering  
 
 Module 2 - [list of nodes -> list of nodes with identification] 
 
