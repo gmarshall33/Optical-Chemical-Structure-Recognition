@@ -1,7 +1,9 @@
 # This is the master script that uses modules 0-5 to convert an image of a molecule to SMILES string.
 # >>> prompt for file
 # >>> [output]
+
 import modules.module0 as m0
+
 
 class Cluster:
     # Here we will create a class for clusters. I will be experimenting with storing the data in this format
