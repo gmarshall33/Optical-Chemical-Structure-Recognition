@@ -1,11 +1,11 @@
 # This is the master script that uses modules 0-5 to convert an image of a molecule to SMILES string.
 
-import modules.module0 as m0
-import modules.module1 as m1
-import modules.module2 as m2
-import modules.module3 as m3
-import modules.module4 as m4
-import modules.module5 as m5
+import modules.module0 as m0  # pre-processing
+import modules.module1 as m1  # Node recognition
+import modules.module2 as m2  # Node classification
+import modules.module3 as m3  # Bond Detection
+import modules.module4 as m4  # Bond Classifcation
+import modules.module5 as m5  # Output formatting
 
 
 class Cluster:
@@ -42,5 +42,5 @@ m3.connection_algo(molecule, img_data)
 
 # BOND CLASSIFIER
 
-
 # OUTPUT FORMATTING
+m5.vis_molecule(molecule, img_data, save_fig=False, filename='untitled.png')
