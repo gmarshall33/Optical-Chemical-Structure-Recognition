@@ -8,7 +8,8 @@ def connection_algo(molecule, img_data):
         print('node: {}'.format(node))
         vote_angle, points = detect_lines(cv2.dilate(img_data['binary'], None, None, None, 2), molecule[node].center, 60)
         # primitive hough function
-        centers = [node.center for node in molecule]
+        centers = [i.center for i in molecule]
+        print(centers)
         closest_to_node = nodes_by_dist(calc_dist(centers), node)  # sort nodes by distance to start comparisons with the nearest
         print('closest to node: {}'.format(closest_to_node))
         dirs = strong_directions(vote_angle)  # consider directions likely corresponding to a line

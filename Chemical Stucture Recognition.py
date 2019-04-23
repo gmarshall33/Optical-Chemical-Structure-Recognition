@@ -19,7 +19,7 @@ class Cluster:
 
 
 # PRE-PROCESS
-filepath = input("File path to image:")
+filepath = raw_input("File path to image: ")
 std_img = m0.preproc_naive(filepath)
 
 # CLUSTER FINDER
