@@ -1,6 +1,4 @@
 # This is the master script that uses modules 0-5 to convert an image of a molecule to SMILES string.
-# >>> prompt for file
-# >>> [output]
 
 import modules.module0 as m0
 import modules.module1 as m1
@@ -12,33 +10,37 @@ import modules.module5 as m5
 
 class Cluster:
     # Here we will create a class for clusters. I will be experimenting with storing the data in this format
-    # The molecule will be represented by a list of these clusters
-    def __init__(self, points, center, snippet):
+    # The molecule will be represented by a list of these clusters. Order matters
+    def __init__(self, points, center):
         self.points = points
         self.center = center
-        self.snippet = snippet
         self.connections = set()  # the other clusters that this one is connected to.
-        # want to store the directions and probably length of lines originating from the center
     # other class methods?
 
 
 # PRE-PROCESS
+filepath = input("File path to image:")
+std_img = m0.preproc_naive(filepath)
 
-# NODE FINDER
+# CLUSTER FINDER
+node_points, img_data = m1.corner_detect(std_img)
+clusters, centers = m1.clust_centers(node_points, 25)
 
-# ORGANIZE
+# FORMAT MOLECULE (list of Clusters)
 molecule = []  # a given molecule is represented by a list of cluster objects
 for i in range(len(clusters)):
     p = clusters[i][:]
     c = centers[i][:]
-    s = snippets[i]
-    molecule.append(Cluster(p, c, s))
+    molecule.append(Cluster(p, c))
     # Creates new cluster with points, center, and snippet data.. appends to molecule list
 
-# NODE CLASSIFIER
+# CLUSTER CLASSIFIER
+snippets = m2.snip(std_img, clusters)
 
 # BOND FINDER
+m3.connection_algo(molecule, img_data)
 
 # BOND CLASSIFIER
+
 
 # OUTPUT FORMATTING

@@ -4,13 +4,11 @@ import numpy as np
 import cv2
 
 
-def corner_detect(filepath, scale=.25):
+def corner_detect(img):
     # image processing function intended for the first pass on a given molecule
     # includes scaling, gray-scale, gaussian blur, harris corner detection, dilation, normalization
     # returns the list of indices on the scaled img that pass the harris corner detection threshold
 
-    img = cv2.imread(filepath)
-    img = cv2.resize(img, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # gray-scale
     gray = np.float32(gray)
     blur = cv2.GaussianBlur(gray, (7, 7), 0)  # blur image to reduce noise

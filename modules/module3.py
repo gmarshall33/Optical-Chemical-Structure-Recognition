@@ -1,6 +1,31 @@
 # This is where bonds between atoms will be recognized using simple hough type functions
-
+import cv2
 import numpy as np
+
+
+def connection_algo(molecule, img_data):
+    for node in range(len(molecule)):
+        print('node: {}'.format(node))
+        vote_angle, points = detect_lines(cv2.dilate(img_data['binary'], None, None, None, 2), molecule[node].center, 60)
+        # primitive hough function
+        centers = [node.center for node in molecule]
+        closest_to_node = nodes_by_dist(calc_dist(centers), node)  # sort nodes by distance to start comparisons with the nearest
+        print('closest to node: {}'.format(closest_to_node))
+        dirs = strong_directions(vote_angle)  # consider directions likely corresponding to a line
+        print('strong directions: {}'.format(dirs))
+        for theta in dirs:
+            connected = False
+            ind = 1  # ind = 0 always starts with the node itself because node 2 is always closest to node 2
+            while not connected and ind < len(molecule) - 1:
+                # go to the next closest node and check connection
+                connected = check_direction(molecule[node], theta, molecule[closest_to_node[ind]])
+                if connected:
+                    # connect the clusters in the molecule -- add it to the set of connections
+                    print('CONNECTION FOUND between node {} and {} with angle {}'.format(node, closest_to_node[ind],
+                                                                                         theta))
+                    bond_clusters(molecule, node, closest_to_node[ind])
+                ind += 1
+    return molecule
 
 
 def detect_lines(img, center, threshold):
@@ -62,6 +87,7 @@ def check_direction(center_cluster, theta, other_cluster, max_percent_error=1):
         return False
 # TODO there are bugs in this function that mess up the angles, also this isn't sufficient criteria to connect nodes
 
+
 def percent_error(x, y):  # helper function
     if y < .1:
         x += np.pi*2
@@ -104,8 +130,3 @@ def bond_clusters(molecule, ind1, ind2):
     molecule[ind1].connections.add(ind2)
     molecule[ind2].connections.add(ind1)
     # not worried about duplicated because connections is a set. [unordered unique entries, iterable]
-
-
-
-
-
